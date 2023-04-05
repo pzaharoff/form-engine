@@ -41,7 +41,6 @@ class FormEngine(
         val beanWrapper = BeanWrapperImpl(entity)
 
         request.data.forEach {
-            val attribute = model.getAttribute(it.key)
             beanWrapper.setPropertyValue(it.key, it.value)
         }
 
