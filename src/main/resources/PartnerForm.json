@@ -1,0 +1,39 @@
+{
+  "id" : "partner-form",
+  "name" : "Партнеры",
+  "entityName" : "ru.classbase.formengine.testmodel.Partner",
+  "fields" : [
+    {
+      "type" : "text",
+      "id" : "name",
+      "name": "Наименование",
+      "required" : true
+    },
+    {
+      "type" : "long",
+      "id" : "amount",
+      "name": "Количество",
+      "required" : true
+    },
+    {
+      "type" : "decimal",
+      "id" : "cost",
+      "name": "Стоимость единицы",
+      "required" : true
+    },
+    {
+      "type" : "boolean",
+      "id" : "active",
+      "name": "Статус",
+      "required" : true
+    },
+
+    {
+      "type" : "date",
+      "id" : "createdAt",
+      "name": "Дата создания",
+      "required" : true
+    }
+
+  ]
+}
