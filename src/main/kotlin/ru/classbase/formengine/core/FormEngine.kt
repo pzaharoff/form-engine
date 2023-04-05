@@ -34,7 +34,6 @@ class FormEngine(
         val form = mapper.readValue(formResource.inputStream, Form::class.java)
 
         var clazz = ClassUtils.forName(form.entityName, null)
-        val model = em.metamodel.entity(clazz)
 
         val entity = clazz.getDeclaredConstructor().newInstance()
 
