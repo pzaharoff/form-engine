@@ -1,5 +1,6 @@
 package ru.classbase.formengine.form
 
+import org.springframework.util.ClassUtils
 import ru.classbase.formengine.core.Role
 
 data class Form(
@@ -8,7 +9,10 @@ data class Form(
     val entityName: String,
     val fields: List<Field>,
     val permissions: Map<FormAction, Set<Role>> = mapOf(),
-)
+) {
+    val entityClass: Class<*> = ClassUtils.forName(entityName, null)
+
+}
 
 
 enum class FormAction(val label: String) {

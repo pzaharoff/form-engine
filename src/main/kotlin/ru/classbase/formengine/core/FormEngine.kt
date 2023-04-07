@@ -31,7 +31,7 @@ class FormEngine(
         //Проверяем, наличие прав на действие согласно ролевой модели
         checkRoleFormPermissions(form, CREATE, userRoles)
         //Проверяем, наличие прав на действие согласно пользовательским SpEL проверкам
-        checkSpelFormPermissions(form, CREATE, userRoles)
+        validateFormAction(form, CREATE, userRoles)
 
         val entity = parseCreateReq(request, form)
 
@@ -42,7 +42,7 @@ class FormEngine(
         return null
     }
 
-    private fun checkSpelFormPermissions(form: Form, create: FormAction, userRoles: Set<Role>) {
+    private fun validateFormAction(form: Form, create: FormAction, userRoles: Set<Role>) {
         TODO("Not yet implemented")
     }
 
@@ -102,9 +102,7 @@ class FormEngine(
 
     private fun parseCreateReq(request: CreateReq, form: Form): BaseEntity {
 
-        var clazz = ClassUtils.forName(form.entityName, null)
-
-        val entity = clazz.getDeclaredConstructor().newInstance()
+        val entity = form.entityClass.getDeclaredConstructor().newInstance()
 
         val beanWrapper = BeanWrapperImpl(entity)
 
