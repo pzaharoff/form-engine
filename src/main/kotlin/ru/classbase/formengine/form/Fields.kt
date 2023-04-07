@@ -3,8 +3,6 @@ package ru.classbase.formengine.form
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import java.math.BigDecimal
-import java.time.LocalDate
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -21,54 +19,65 @@ import java.time.LocalDate
     ]
 )
 interface Field {
-    val id: String
-    val name: String
+    val fieldName: String
+    val label: String
     val required: Boolean
-    val defaultValue:String
+    val defaultValue: String
     val constraints: List<FieldConstraint>
 }
 
 data class TextField(
-    override val id: String,
-    override val name: String,
+    override val fieldName: String,
+    override val label: String,
     override val required: Boolean = true,
     override val constraints: List<FieldConstraint> = listOf(),
-    override val defaultValue: String = "null",
+    override val defaultValue: String = "",
     val length: Int = 255,
 
-) : Field
+    ) : Field
 
 data class BoolField(
-    override val id: String,
-    override val name: String,
+    override val fieldName: String,
+    override val label: String,
     override val required: Boolean = true,
-    override val defaultValue: String = "true",
+    override val defaultValue: String = "",
     override val constraints: List<FieldConstraint> = listOf(),
 ) : Field
 
 data class LongField(
-    override val id: String,
-    override val name: String,
+    override val fieldName: String,
+    override val label: String,
     override val required: Boolean = true,
-    override val defaultValue: String = "null",
+    override val defaultValue: String = "",
     override val constraints: List<FieldConstraint> = listOf(),
 ) : Field
 
 data class DecimalField(
-    override val id: String,
-    override val name: String,
+    override val fieldName: String,
+    override val label: String,
     override val required: Boolean = true,
-    override val defaultValue: String = "null",
+    override val defaultValue: String = "",
     override val constraints: List<FieldConstraint> = listOf(),
     val precision: Int = 10,
     val scale: Int = 2,
 ) : Field
 
 data class DateField(
-    override val id: String,
-    override val name: String,
+    override val fieldName: String,
+    override val label: String,
     override val required: Boolean = true,
-    override val defaultValue: String = "null",
+    override val defaultValue: String = "",
     override val constraints: List<FieldConstraint> = listOf(),
+) : Field
+
+data class ReferenceField(
+    override val fieldName: String,
+    override val label: String,
+    override val required: Boolean = true,
+    override val defaultValue: String = "",
+    override val constraints: List<FieldConstraint> = listOf(),
+    val refEntity: String,
+    val refViewExpression: String = "name",
+    val refListQuery : String = "select t.id, t.name from #refEntity t where lower(t.name) like :search order by t.name"
 ) : Field
 

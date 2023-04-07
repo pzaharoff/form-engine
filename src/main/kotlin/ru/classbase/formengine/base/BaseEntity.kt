@@ -17,6 +17,9 @@ open class BaseEntity : Identifier {
     @Column(name = "version", nullable = false)
     var version : Int = 0
 
+    @Column(name = "deleted", nullable = false)
+    var deleted : Boolean = false
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is BaseEntity) return false
