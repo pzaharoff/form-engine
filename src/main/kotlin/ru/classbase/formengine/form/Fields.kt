@@ -3,6 +3,11 @@ package ru.classbase.formengine.form
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
 import com.fasterxml.jackson.annotation.JsonTypeInfo
+import ru.classbase.formengine.core.Role
+
+enum class FieldState {
+    ENABLED, DISABLED, HIDDEN
+}
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -24,17 +29,19 @@ interface Field {
     val required: Boolean
     val defaultValue: String
     val constraints: List<FieldConstraint>
+    val permissions: Map<FormAction, Map<FieldState, Set<Role>>>
 }
 
 data class TextField(
     override val fieldName: String,
     override val label: String,
     override val required: Boolean = true,
-    override val constraints: List<FieldConstraint> = listOf(),
     override val defaultValue: String = "",
-    val length: Int = 255,
-
-    ) : Field
+    override val constraints: List<FieldConstraint> = listOf(),
+    override val permissions: Map<FormAction, Map<FieldState, Set<Role>>> = mapOf(),
+    val min: Long = 0,
+    val max: Long = 255,
+) : Field
 
 data class BoolField(
     override val fieldName: String,
@@ -42,6 +49,7 @@ data class BoolField(
     override val required: Boolean = true,
     override val defaultValue: String = "",
     override val constraints: List<FieldConstraint> = listOf(),
+    override val permissions: Map<FormAction, Map<FieldState, Set<Role>>> = mapOf(),
 ) : Field
 
 data class LongField(
@@ -50,6 +58,9 @@ data class LongField(
     override val required: Boolean = true,
     override val defaultValue: String = "",
     override val constraints: List<FieldConstraint> = listOf(),
+    override val permissions: Map<FormAction, Map<FieldState, Set<Role>>> = mapOf(),
+    val min: Long = 0,
+    val max: Long = 255,
 ) : Field
 
 data class DecimalField(
@@ -58,6 +69,7 @@ data class DecimalField(
     override val required: Boolean = true,
     override val defaultValue: String = "",
     override val constraints: List<FieldConstraint> = listOf(),
+    override val permissions: Map<FormAction, Map<FieldState, Set<Role>>> = mapOf(),
     val precision: Int = 10,
     val scale: Int = 2,
 ) : Field
@@ -68,6 +80,7 @@ data class DateField(
     override val required: Boolean = true,
     override val defaultValue: String = "",
     override val constraints: List<FieldConstraint> = listOf(),
+    override val permissions: Map<FormAction, Map<FieldState, Set<Role>>> = mapOf(),
 ) : Field
 
 data class ReferenceField(
@@ -76,8 +89,9 @@ data class ReferenceField(
     override val required: Boolean = true,
     override val defaultValue: String = "",
     override val constraints: List<FieldConstraint> = listOf(),
+    override val permissions: Map<FormAction, Map<FieldState, Set<Role>>> = mapOf(),
     val refEntity: String,
     val refViewExpression: String = "name",
-    val refListQuery : String = "select t.id, t.name from #refEntity t where lower(t.name) like :search order by t.name"
+    val refListQuery: String = "select t.id, t.name from #refEntity t where lower(t.name) like :search order by t.name"
 ) : Field
 

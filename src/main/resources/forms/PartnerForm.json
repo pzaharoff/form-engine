@@ -8,37 +8,92 @@
       "fieldName": "name",
       "label": "Наименование",
       "required": true,
-      "defaultValue": "@firstDayOfNextMonthValue.getValue()"
+      "permissions": {
+        "CREATE": {
+          "HIDDEN": [],
+          "DISABLED": [],
+          "ENABLED": [
+            "SUPER_ADMIN"
+          ]
+        }
+      }
     },
     {
       "type": "long",
       "fieldName": "amount",
       "label": "Количество",
-      "required": true
+      "required": true,
+      "permissions": {
+        "CREATE": {
+          "HIDDEN": [],
+          "DISABLED": [],
+          "ENABLED": [
+            "SUPER_ADMIN"
+          ]
+        }
+      }
+
     },
     {
       "type": "decimal",
       "fieldName": "cost",
       "label": "Стоимость единицы",
-      "required": true
+      "required": true,
+      "permissions": {
+        "CREATE": {
+          "HIDDEN": [],
+          "DISABLED": [],
+          "ENABLED": [
+            "SUPER_ADMIN"
+          ]
+        }
+      }
+
     },
     {
       "type": "boolean",
       "fieldName": "active",
       "label": "Статус",
-      "required": true
+      "required": true,
+      "permissions": {
+        "CREATE": {
+          "HIDDEN": [],
+          "DISABLED": [],
+          "ENABLED": [
+            "SUPER_ADMIN"
+          ]
+        }
+      }
     },
     {
       "type": "date",
       "fieldName": "createdAt",
       "label": "Дата создания",
-      "required": true
+      "required": true,
+      "permissions": {
+        "CREATE": {
+          "HIDDEN": [],
+          "DISABLED": [],
+          "ENABLED": [
+            "SUPER_ADMIN"
+          ]
+        }
+      }
     },
     {
       "type": "date",
       "fieldName": "createdAt",
       "label": "Дата создания",
-      "required": true
+      "required": true,
+      "permissions": {
+        "CREATE": {
+          "HIDDEN": [],
+          "DISABLED": [],
+          "ENABLED": [
+            "SUPER_ADMIN"
+          ]
+        }
+      }
     }
   ],
   "permissions": {

@@ -9,7 +9,6 @@ import org.springframework.expression.spel.standard.SpelExpressionParser
 import org.springframework.expression.spel.support.StandardEvaluationContext
 import org.springframework.stereotype.Component
 import org.springframework.transaction.support.TransactionTemplate
-import org.springframework.util.ClassUtils
 import ru.classbase.formengine.base.BaseEntity
 import ru.classbase.formengine.form.Form
 import ru.classbase.formengine.form.FormAction
@@ -30,16 +29,51 @@ class FormEngine(
 
         //Проверяем, наличие прав на действие согласно ролевой модели
         checkRoleFormPermissions(form, CREATE, userRoles)
-        //Проверяем, наличие прав на действие согласно пользовательским SpEL проверкам
+
+        //Проверяем возможность выполнения согласно пользовательским SpEL проверкам
         validateFormAction(form, CREATE, userRoles)
 
-        val entity = parseCreateReq(request, form)
+        //Создаем пустой экземляр сущности привязанной к форме
+        var entity = createEmptyEntity(form)
+
+        val cleanedRequest = cleanRequest(form, request, userRoles)
+        processEmbeddedValidations(form)
+        //Убираем из запроса поля на которые нет прав при выполнении действия
+        val filteredRequest = asda
+
+        fillEntity(entity, request)
+
+
+        //parseCreateReq(request, form)
 
         tx.execute {
             em.persist(entity)
         }
 
         return null
+    }
+
+    private fun cleanRequest(form: Form, request: CreateReq): CreateReq {
+        val data = request.data.filter { }
+    }
+
+    private fun fillEntity(entity: BaseEntity, request: CreateReq) {
+        val result = tx.execute {
+
+            val beanWrapper = BeanWrapperImpl(entity)
+
+            request.data.forEach {
+                val value = getDefaultValue(form, it.key, it.value)
+                beanWrapper.setPropertyValue(it.key, value)
+            }
+        }
+
+        return result as BaseEntity
+
+    }
+
+    private fun createEmptyEntity(form: Form): BaseEntity {
+        return form.entityClass.getDeclaredConstructor().newInstance() as BaseEntity
     }
 
     private fun validateFormAction(form: Form, create: FormAction, userRoles: Set<Role>) {
@@ -53,32 +87,8 @@ class FormEngine(
         }
     }
 
-    fun update(request: UpdateReq, form: Form): UpdateRs? {
-        val entity = parseUpdateReq(request, form)
-
-        tx.execute {
-            em.persist(entity)
-        }
-
-        return null
-    }
-
-    private fun parseUpdateReq(request: UpdateReq, form: Form): BaseEntity {
-
-        var clazz = ClassUtils.forName(form.entityName, null)
-
-        val result = tx.execute {
-            val entity = em.find(clazz, request.id)
-
-            val beanWrapper = BeanWrapperImpl(entity)
-
-            request.data.forEach {
-                val value = getDefaultValue(form, it.key, it.value)
-                beanWrapper.setPropertyValue(it.key, value)
-            }
-        }
-
-        return result as BaseEntity
+    private fun hasPermissions(userRoles: Iterable<Role>, targetRoles: Set<Role>): Boolean {
+        return userRoles.any { it in targetRoles }
     }
 
     private fun getDefaultValue(form: Form, key: String, value: Any?): Any? {
@@ -102,15 +112,6 @@ class FormEngine(
 
     private fun parseCreateReq(request: CreateReq, form: Form): BaseEntity {
 
-        val entity = form.entityClass.getDeclaredConstructor().newInstance()
 
-        val beanWrapper = BeanWrapperImpl(entity)
-
-        request.data.forEach {
-            val value = getDefaultValue(form, it.key, it.value)
-            beanWrapper.setPropertyValue(it.key, value)
-        }
-
-        return entity as BaseEntity
     }
 }
