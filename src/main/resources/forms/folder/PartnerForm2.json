@@ -2,43 +2,42 @@
   "id": "PartnerForm2",
   "label": "Партнеры",
   "entityName": "ru.classbase.formengine.example.model.Partner",
-  "fields": [
-    {
+  "fields": {
+    "name": {
       "type": "text",
       "fieldName": "name",
       "label": "Наименование",
-      "required": true,
-      "defaultValue": "@firstDayOfNextMonthValue.getValue()"
+      "required": true
     },
-    {
+    "amount": {
       "type": "long",
       "fieldName": "amount",
       "label": "Количество",
       "required": true
     },
-    {
+    "cost": {
       "type": "decimal",
       "fieldName": "cost",
       "label": "Стоимость единицы",
       "required": true
     },
-    {
+    "active": {
       "type": "boolean",
       "fieldName": "active",
       "label": "Статус",
       "required": true
     },
-    {
+    "createdAt": {
       "type": "date",
       "fieldName": "createdAt",
       "label": "Дата создания",
       "required": true
     },
-    {
+    "date": {
       "type": "date",
       "fieldName": "createdAt",
       "label": "Дата создания",
       "required": true
     }
-  ]
+  }
 }

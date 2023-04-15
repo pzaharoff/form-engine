@@ -2,126 +2,42 @@
   "id": "PartnerForm",
   "label": "Партнеры",
   "entityName": "ru.classbase.formengine.example.model.Partner",
-  "fields": [
-    {
+  "fields": {
+    "name": {
       "type": "text",
       "fieldName": "name",
       "label": "Наименование",
-      "required": true,
-      "permissions": {
-        "CREATE": {
-          "HIDDEN": [],
-          "DISABLED": [],
-          "ENABLED": [
-            "SUPER_ADMIN"
-          ]
-        }
-      }
+      "required": true
     },
-    {
+    "amount": {
       "type": "long",
       "fieldName": "amount",
       "label": "Количество",
-      "required": true,
-      "permissions": {
-        "CREATE": {
-          "HIDDEN": [],
-          "DISABLED": [],
-          "ENABLED": [
-            "SUPER_ADMIN"
-          ]
-        }
-      }
-
+      "required": true
     },
-    {
+    "cost": {
       "type": "decimal",
       "fieldName": "cost",
       "label": "Стоимость единицы",
-      "required": true,
-      "permissions": {
-        "CREATE": {
-          "HIDDEN": [],
-          "DISABLED": [],
-          "ENABLED": [
-            "SUPER_ADMIN"
-          ]
-        }
-      }
-
+      "required": true
     },
-    {
+    "active": {
       "type": "boolean",
       "fieldName": "active",
       "label": "Статус",
-      "required": true,
-      "permissions": {
-        "CREATE": {
-          "HIDDEN": [],
-          "DISABLED": [],
-          "ENABLED": [
-            "SUPER_ADMIN"
-          ]
-        }
-      }
+      "required": true
     },
-    {
+    "createdAt": {
       "type": "date",
       "fieldName": "createdAt",
       "label": "Дата создания",
-      "required": true,
-      "permissions": {
-        "CREATE": {
-          "HIDDEN": [],
-          "DISABLED": [],
-          "ENABLED": [
-            "SUPER_ADMIN"
-          ]
-        }
-      }
+      "required": true
     },
-    {
+    "date": {
       "type": "date",
       "fieldName": "createdAt",
       "label": "Дата создания",
-      "required": true,
-      "permissions": {
-        "CREATE": {
-          "HIDDEN": [],
-          "DISABLED": [],
-          "ENABLED": [
-            "SUPER_ADMIN"
-          ]
-        }
-      }
+      "required": true
     }
-  ],
-  "permissions": {
-    "CREATE": [
-      "SUPER_ADMIN",
-      "DATA_ADMIN",
-      "EMPLOYEE"
-    ],
-    "UPDATE": [
-      "SUPER_ADMIN",
-      "DATA_ADMIN",
-      "EMPLOYEE"
-    ],
-    "DELETE": [
-      "SUPER_ADMIN",
-      "DATA_ADMIN"
-    ],
-    "READ": [
-      "SUPER_ADMIN",
-      "DATA_ADMIN",
-      "EMPLOYEE",
-      "READER"
-    ],
-    "LIST": [
-      "SUPER_ADMIN",
-      "DATA_ADMIN",
-      "EMPLOYEE",
-      "READER"
-    ]
   }
 }
