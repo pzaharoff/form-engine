@@ -7,9 +7,13 @@ import java.util.*
 
 interface AppResourceDao :JpaRepository<AppResource, UUID> {
 
+    fun findByPath(fullPath : String) : AppResource?
+
     @Query("""
         from AppResource t
         where t.fullPath like :fullPath
     """)
-    fun findByPath(fullPath : String) : Set<AppResource>
+    fun findResourcesByPath(fullPath : String) : Set<AppResource>
+
+
 }

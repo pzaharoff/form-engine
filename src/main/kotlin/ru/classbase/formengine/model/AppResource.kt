@@ -18,7 +18,13 @@ class AppResource : BaseEntity() {
     @Column(name = "path", nullable = false, length = 1024)
     lateinit var fullPath: String
 
+    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    lateinit var type: AppResourceType
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     var parent: AppResource? = null
+
+
 }

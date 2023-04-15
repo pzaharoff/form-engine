@@ -11,6 +11,7 @@ import ru.classbase.formengine.form.Form
 class Application(private val resourceLoader: ResourceLoader, formLocations: List<String> = listOf()) {
     private val forms =  mutableMapOf<String, Form>()
 
+
     init {
         val locations = formLocations.ifEmpty { listOf("classpath:/forms/**/*.json") }
         val resolver = PathMatchingResourcePatternResolver(resourceLoader)
@@ -34,4 +35,6 @@ class Application(private val resourceLoader: ResourceLoader, formLocations: Lis
             throw FormException("Форма с id=$formId не найдена")
         }
     }
+
+    fun getForms() = forms
 }
