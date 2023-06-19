@@ -1,16 +1,24 @@
 package ru.classbase.formengine
 
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import ru.classbase.formengine.core.CreateReq
-import ru.classbase.formengine.core.FormEngine
+import ru.classbase.formengine.core.AbstractForm
 
 @SpringBootTest
 class GeneratorTest {
 
-    @Autowired
-    lateinit var formEngine: FormEngine
+    @Test
+    fun createForm() {
+
+    }
+
+    class TestForm : AbstractForm() {
+        init {
+
+        }
+    }
+    //@Autowired
+    //lateinit var formEngine: FormEngine
     /*
         @Autowired
         lateinit var loader: ResourceLoader
@@ -24,38 +32,38 @@ class GeneratorTest {
 
     @Test
     fun generate() {
-        val request = CreateReq(
-            "PartnerForm",
-            mapOf(
-                "name" to "Наименование",
-                "amount" to "20",
-                "cost" to "25",
-                "active" to "true"
-            )
-        )
+        /* val request = CreateReq(
+             "PartnerForm",
+             mapOf(
+                 "name" to "Наименование",
+                 "amount" to "20",
+                 "cost" to "25",
+                 "active" to "true"
+             )
+         )
 
-        val response = formEngine.create(request)
+         val response = formEngine.create(request)
 
-        println(response)
+         println(response)*/
 
-    /*
-                val formResource = loader.getResource("classpath:PartnerForm.json")
-                val form = mapper.readValue(formResource.inputStream, Form::class.java)
+        /*
+                    val formResource = loader.getResource("classpath:PartnerForm.json")
+                    val form = mapper.readValue(formResource.inputStream, Form::class.java)
 
-                val partner = Partner().apply {
-                    name = "Наименование"
-                    amount = 20
-                    cost = "25".toBigDecimal()
-                    active = true
-                }
+                    val partner = Partner().apply {
+                        name = "Наименование"
+                        amount = 20
+                        cost = "25".toBigDecimal()
+                        active = true
+                    }
 
-                tx.execute {
-                    em.persist(partner)
-                }
+                    tx.execute {
+                        em.persist(partner)
+                    }
 
 
-                println(form)
-        */
+                    println(form)
+            */
     }
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import ru.classbase.formengine.core.Role
+/*
 
 enum class FieldState {
     ENABLED, DISABLED, HIDDEN
@@ -94,4 +95,5 @@ data class ReferenceField(
     val refViewExpression: String = "name",
     val refListQuery: String = "select t.id, t.name from #refEntity t where lower(t.name) like :search order by t.name"
 ) : Field
+*/
 

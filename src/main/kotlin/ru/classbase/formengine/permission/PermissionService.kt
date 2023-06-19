@@ -1,24 +1,21 @@
 package ru.classbase.formengine.permission
 
-import org.springframework.stereotype.Component
-import ru.classbase.formengine.core.Application
-import ru.classbase.formengine.form.Form
-import ru.classbase.formengine.model.AppResource
-import ru.classbase.formengine.model.AppResourceType.*
-import ru.classbase.formengine.model.FormAction
 
+
+/*
 
 @Component
 class PermissionService(private val appResourceDao: AppResourceDao, private val application: Application) {
     private val ADMIN_ROLE = "ADMIN"
     private val READER_ROLE = "READER"
 
-    private val crudActions =
-        listOf(FormAction.CREATE, FormAction.READ, FormAction.UPDATE, FormAction.DELETE, FormAction.LIST)
+    //private val crudActions =  listOf(FormAction.CREATE, FormAction.READ, FormAction.UPDATE, FormAction.DELETE, FormAction.LIST)
 
-    /**
+    */
+/**
      * Обновить или создать ресурсы и права по умолчанию для всех форм
-     */
+     *//*
+
     fun refreshFormResources() {
         application.getForms().forEach {
             refreshFormResource(it.value.id)
@@ -27,9 +24,11 @@ class PermissionService(private val appResourceDao: AppResourceDao, private val 
         removeNonExistingFormResources()
     }
 
-    /**
+    */
+/**
      * Обновить или создать ресурсы и права по умолчанию для формы
-     */
+     *//*
+
     fun refreshFormResource(formId: String) {
         val form = application.getForm(formId)
 
@@ -114,4 +113,4 @@ class PermissionService(private val appResourceDao: AppResourceDao, private val 
         appResourceDao.saveAll(storedForms)
     }
 
-}
+}*/

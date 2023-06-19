@@ -8,16 +8,13 @@ import org.springframework.transaction.support.TransactionTemplate
 
 
 @Component
-class FormEngine(
+class FormEngineOld(
     private val em: EntityManager,
     private val tx: TransactionTemplate,
     private val application: Application,
     private val beanFactory: BeanFactory
 ) {
 
-    fun create(request: CreateReq): CreateRs? {
-        return null
-    }
 /*
 
     fun create(request: CreateReq, userRoles: Set<Role>): CreateRs? {

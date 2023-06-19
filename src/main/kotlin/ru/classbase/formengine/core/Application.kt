@@ -5,12 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.stereotype.Component
-import ru.classbase.formengine.form.Form
+//import ru.classbase.formengine.form.Form
 
 @Component
 class Application(private val resourceLoader: ResourceLoader, formLocations: List<String> = listOf()) {
-    private val forms =  mutableMapOf<String, Form>()
-
+    //private val forms =  mutableMapOf<String, Form>()
+/*
 
     init {
         val locations = formLocations.ifEmpty { listOf("classpath:/forms/**/*.json") }
@@ -37,4 +37,6 @@ class Application(private val resourceLoader: ResourceLoader, formLocations: Lis
     }
 
     fun getForms() = forms
+
+ */
 }
