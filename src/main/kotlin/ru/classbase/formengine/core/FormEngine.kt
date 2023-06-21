@@ -4,7 +4,8 @@ import jakarta.persistence.EntityManager
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.stereotype.Component
 import org.springframework.transaction.support.TransactionTemplate
-
+import ru.classbase.formengine.model.FormAction
+import ru.classbase.formengine.permission.PermissionService
 
 
 @Component
@@ -12,10 +13,15 @@ class FormEngine(
     private val em: EntityManager,
     private val tx: TransactionTemplate,
     private val application: Application,
-    private val beanFactory: BeanFactory
+    private val beanFactory: BeanFactory,
+    private val formManager: FormManager,
+    private val permissionService: PermissionService
 ) {
 
-    fun create(request: CreateReq): CreateRs? {
+    fun create(request: CreateReq, userRoles: Set<Role>): CreateRs? {
+        val form = formManager.get(request.form)
+        permissionService.checkPermissions(form, FormAction.CREATE, userRoles)
+
         return null
     }
 /*

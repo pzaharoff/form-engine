@@ -1,20 +1,43 @@
 package ru.classbase.formengine.permission
 
+import org.springframework.stereotype.Component
+import ru.classbase.formengine.core.Form
+import ru.classbase.formengine.core.FormException
+import ru.classbase.formengine.core.Role
+import ru.classbase.formengine.model.FormAction
+import ru.classbase.formengine.model.Permission
+import ru.classbase.formengine.model.Permission.ENABLED
 
-
-/*
 
 @Component
-class PermissionService(private val appResourceDao: AppResourceDao, private val application: Application) {
+class PermissionService(
+    private val appResourceDao: AppResourceDao,
+    private val appResourceRoleDao: AppResourceRoleDao
+) {
     private val ADMIN_ROLE = "ADMIN"
     private val READER_ROLE = "READER"
 
     //private val crudActions =  listOf(FormAction.CREATE, FormAction.READ, FormAction.UPDATE, FormAction.DELETE, FormAction.LIST)
 
-    */
+    fun checkPermissions(form: Form, action: FormAction, userRoles: Set<Role>) {
+        val resourceName = getResourceName(form, action)
+        val resource =
+            appResourceDao.find(resourceName) ?: throw FormException("Resource item not found, fullPath=$resourceName")
+
+        val roles = appResourceRoleDao.findBy(resource, ENABLED).map { it. }
+
+        if()
+    }
+
+    fun getResourceName(form: Form, action: FormAction): String {
+        return "${form.formId}/${action.name}"
+    }
+
+}
+
 /**
-     * Обновить или создать ресурсы и права по умолчанию для всех форм
-     *//*
+ * Обновить или создать ресурсы и права по умолчанию для всех форм
+ *//*
 
     fun refreshFormResources() {
         application.getForms().forEach {
@@ -26,8 +49,8 @@ class PermissionService(private val appResourceDao: AppResourceDao, private val 
 
     */
 /**
-     * Обновить или создать ресурсы и права по умолчанию для формы
-     *//*
+ * Обновить или создать ресурсы и права по умолчанию для формы
+ *//*
 
     fun refreshFormResource(formId: String) {
         val form = application.getForm(formId)
