@@ -5,13 +5,12 @@ import ru.classbase.formengine.core.Form
 import ru.classbase.formengine.core.FormException
 import ru.classbase.formengine.core.Role
 import ru.classbase.formengine.model.FormAction
-import ru.classbase.formengine.model.Permission
 import ru.classbase.formengine.model.Permission.ENABLED
 
 
 @Component
 class PermissionService(
-    private val appResourceDao: AppResourceDao,
+    private val appResourceDao: RoleDao,
     private val appResourceRoleDao: AppResourceRoleDao
 ) {
     private val ADMIN_ROLE = "ADMIN"
