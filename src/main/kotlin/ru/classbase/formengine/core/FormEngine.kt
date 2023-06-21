@@ -5,7 +5,9 @@ import org.springframework.beans.factory.BeanFactory
 import org.springframework.stereotype.Component
 import org.springframework.transaction.support.TransactionTemplate
 import ru.classbase.formengine.model.FormAction
+import ru.classbase.formengine.model.User
 import ru.classbase.formengine.permission.PermissionService
+import ru.classbase.formengine.permission.UserDto
 
 
 @Component
@@ -18,9 +20,9 @@ class FormEngine(
     private val permissionService: PermissionService
 ) {
 
-    fun create(request: CreateReq, userRoles: Set<Role>): CreateRs? {
+    fun create(request: CreateReq, user: User): CreateRs? {
         val form = formManager.get(request.form)
-        permissionService.checkPermissions(form, FormAction.CREATE, userRoles)
+        permissionService.checkCreate(form, FormAction.CREATE, userRoles)
 
         return null
     }

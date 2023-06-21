@@ -9,6 +9,7 @@ enum class ResponseStatus {
 
 data class CreateReq(
     val form: String,
+    val role: String? = null,
     val data: Map<String, Any?> = mapOf()
 )
 

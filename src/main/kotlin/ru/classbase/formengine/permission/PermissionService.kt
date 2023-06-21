@@ -10,13 +10,17 @@ import ru.classbase.formengine.model.Permission.ENABLED
 
 @Component
 class PermissionService(
-    private val appResourceDao: RoleDao,
-    private val appResourceRoleDao: AppResourceRoleDao
+    private val userDao: UserDao,
+    private val userRoleDao: UserRoleDao
 ) {
     private val ADMIN_ROLE = "ADMIN"
     private val READER_ROLE = "READER"
 
-    //private val crudActions =  listOf(FormAction.CREATE, FormAction.READ, FormAction.UPDATE, FormAction.DELETE, FormAction.LIST)
+    fun checkUserRole(login: String, role: String) {
+        val user = userDao.findByLogin(login.lowercase())
+        val userRoles = userRoleDao.findByUser(user)
+        userRoles.firstOrNull { it.code == role } ?: throw FormException("У пользователя [$login] нет роли [$role]")
+    }
 
     fun checkPermissions(form: Form, action: FormAction, userRoles: Set<Role>) {
         val resourceName = getResourceName(form, action)
@@ -25,7 +29,7 @@ class PermissionService(
 
         val roles = appResourceRoleDao.findBy(resource, ENABLED).map { it. }
 
-        if()
+        if ()
     }
 
     fun getResourceName(form: Form, action: FormAction): String {
