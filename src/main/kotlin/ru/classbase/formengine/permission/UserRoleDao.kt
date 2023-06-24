@@ -15,5 +15,5 @@ interface UserRoleDao : JpaDao<UserRole> {
           where t.user = :user
     """
     )
-    fun findByUser(@Param("user") user: User): List<Role>
+    fun findByUser(@Param("user") user: User): Set<Role>
 }

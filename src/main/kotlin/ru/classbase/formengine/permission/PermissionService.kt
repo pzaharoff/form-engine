@@ -3,38 +3,57 @@ package ru.classbase.formengine.permission
 import org.springframework.stereotype.Component
 import ru.classbase.formengine.core.Form
 import ru.classbase.formengine.core.FormException
-import ru.classbase.formengine.core.Role
 import ru.classbase.formengine.model.FormAction
 import ru.classbase.formengine.model.Permission.ENABLED
+import ru.classbase.formengine.model.Role
+import ru.classbase.formengine.model.User
 
 
 @Component
 class PermissionService(
     private val userDao: UserDao,
-    private val userRoleDao: UserRoleDao
+    private val userRoleDao: UserRoleDao,
+    private val formPermissionDao: FormPermissionDao
 ) {
     private val ADMIN_ROLE = "ADMIN"
     private val READER_ROLE = "READER"
 
-    fun checkUserRole(login: String, role: String) {
-        val user = userDao.findByLogin(login.lowercase())
-        val userRoles = userRoleDao.findByUser(user)
-        userRoles.firstOrNull { it.code == role } ?: throw FormException("У пользователя [$login] нет роли [$role]")
+    fun checkCreate(formId: String, role: Role) {
+        val permission = formPermissionDao.findByFormAndRole(formId, role)
+        if (permission == null || !permission.hasCreate) {
+            throw FormException("Форма [$formId], роль [${role.name}], нет прав на создание записи")
+        }
     }
 
-    fun checkPermissions(form: Form, action: FormAction, userRoles: Set<Role>) {
-        val resourceName = getResourceName(form, action)
-        val resource =
-            appResourceDao.find(resourceName) ?: throw FormException("Resource item not found, fullPath=$resourceName")
-
-        val roles = appResourceRoleDao.findBy(resource, ENABLED).map { it. }
-
-        if ()
+    fun checkUpdate(formId: String, role: Role) {
+        val permission = formPermissionDao.findByFormAndRole(formId, role)
+        if (permission == null || !permission.hasUpdate) {
+            throw FormException("Форма [$formId], роль [${role.name}], нет прав на обновление записи")
+        }
     }
 
-    fun getResourceName(form: Form, action: FormAction): String {
-        return "${form.formId}/${action.name}"
+    fun checkDelete(formId: String, role: Role) {
+        val permission = formPermissionDao.findByFormAndRole(formId, role)
+        if (permission == null || !permission.hasDelete) {
+            throw FormException("Форма [$formId], роль [${role.name}], нет прав на удаление записи")
+        }
     }
+
+    fun checkRead(formId: String, role: Role) {
+        val permission = formPermissionDao.findByFormAndRole(formId, role)
+        if (permission == null || !permission.hasRead) {
+            throw FormException("Форма [$formId], роль [${role.name}], нет прав на чтение")
+        }
+    }
+
+    /*
+        fun checkUserRole(login: String, role: String) {
+            val user = userDao.findByLogin(login.lowercase())
+            val userRoles = userRoleDao.findByUser(user)
+            userRoles.firstOrNull { it.code == role } ?: throw FormException("У пользователя [$login] нет роли [$role]")
+        }
+    */
+
 
 }
 

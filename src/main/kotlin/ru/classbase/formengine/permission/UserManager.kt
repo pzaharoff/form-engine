@@ -2,6 +2,7 @@ package ru.classbase.formengine.permission
 
 import org.springframework.stereotype.Component
 import ru.classbase.formengine.core.FormException
+import ru.classbase.formengine.model.Role
 import ru.classbase.formengine.model.User
 
 @Component
@@ -17,5 +18,17 @@ class UserManager(private val userDao: UserDao, private val userRoleDao: UserRol
         }
 
         return user
+    }
+
+    fun selectRole(role: Role?, user: User): Role {
+        if (role != null) {
+            if (userRoleDao.findByUser(user).contains(role)) {
+                return role
+            } else {
+                throw FormException("У пользователя [${user.login}] нет роли [${role.name}]")
+            }
+        }
+
+        return user.currentRole ?: throw FormException("У пользователя [${user.login}] не задана роль по умолчанию")
     }
 }

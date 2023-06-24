@@ -9,14 +9,13 @@ enum class ResponseStatus {
 
 data class CreateReq(
     val form: String,
-    val role: String? = null,
-    val data: Map<String, Any?> = mapOf()
+    val data: Map<String, Any?> = hashMapOf()
 )
 
 data class CreateRs(
     val id: UUID,
     val form: String,
-    val data: Map<String, Any?> = mapOf(),
+    val data: Map<String, Any?> = hashMapOf(),
     val status: ResponseStatus = OK,
     val message: String = "",
 )

@@ -1,9 +1,5 @@
 package ru.classbase.formengine.form
 
-import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type
-import com.fasterxml.jackson.annotation.JsonTypeInfo
-import ru.classbase.formengine.core.Role
 /*
 
 enum class FieldState {
