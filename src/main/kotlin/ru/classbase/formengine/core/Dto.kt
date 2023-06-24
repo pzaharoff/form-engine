@@ -14,7 +14,7 @@ data class CreateReq(
 
 data class CreateRs(
     val id: UUID,
-    val form: String,
+    val formId: String,
     val data: Map<String, Any?> = hashMapOf(),
     val status: ResponseStatus = OK,
     val message: String = "",

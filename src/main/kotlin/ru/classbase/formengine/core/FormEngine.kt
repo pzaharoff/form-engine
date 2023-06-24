@@ -1,13 +1,14 @@
 package ru.classbase.formengine.core
 
 import jakarta.persistence.EntityManager
+import org.springframework.beans.BeanWrapperImpl
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.stereotype.Component
 import org.springframework.transaction.support.TransactionTemplate
 import ru.classbase.formengine.base.BaseEntity
 import ru.classbase.formengine.model.Role
-import ru.classbase.formengine.model.User
 import ru.classbase.formengine.permission.PermissionService
+import java.math.BigDecimal
 import kotlin.reflect.full.createInstance
 
 
@@ -18,6 +19,7 @@ class FormEngine(
     private val application: Application,
     private val beanFactory: BeanFactory,
     private val formManager: FormManager,
+    private val fieldServiceManager: FieldServiceManager,
     private val permissionService: PermissionService
 ) {
 
@@ -31,7 +33,59 @@ class FormEngine(
         //получим поля с доступом на создание
         val grantedValues = getCreateGrantedFields(form, role, filteredValues)
 
-        return null
+        //конвертируем значения
+        val convertedValues = convertValues(form, grantedValues)
+
+        //запустим встроенную валидацию
+        processInternalValidation(form, convertedValues)
+
+        //подготовим поля для заполнения сущности
+        val preparedValues = prepareEntityValues(form, convertedValues)
+
+        val entity = createEmptyEntity(form)
+
+        tx.execute {
+            em.persist(entity)
+        }
+
+        val response = CreateRs(entity.id, form.formId)
+
+        return response
+    }
+
+    private fun prepareEntityValues(form: Form, convertedValues: Map<String, Any?>): Map<String, Any?> {
+
+    }
+
+    private fun processInternalValidation(form: Form, values: Map<String, Any?>) {
+        values.forEach {
+            val field = form.fields[it.key]!!
+            validateInternal(it.value, field)
+        }
+    }
+
+    private fun validateInternal(value: Any?, field: Field<*>) {
+        val service = fieldServiceManager.get(field)
+
+        when (service) {
+            is TextFieldHandler -> service.validateInternal(value as String?, field as TextField)
+            is DecimalFieldHandler -> service.validateInternal(value as BigDecimal?, field as DecimalField)
+            is BooleanFieldHandler -> service.validateInternal(value as Boolean?, field as BooleanField)
+            else -> throw FormException("Не найден обработчик поля ${field.id}")
+        }
+    }
+
+    private fun convertValues(form: Form, values: Map<String, Any?>): Map<String, Any?> {
+        val result = hashMapOf<String, Any?>()
+
+        values.forEach {
+            val field = form.fields[it.key]!!
+            val service = fieldServiceManager.get(field)
+            val converted = service.convert(it.value)
+            result[it.key] = converted
+        }
+
+        return result
     }
 
     private fun getCreateGrantedFields(form: Form, role: Role, filteredValues: Map<String, Any?>): Map<String, Any?> {
@@ -58,6 +112,17 @@ class FormEngine(
         return form.entityClass.createInstance()
     }
 
+    private fun fillEntity(entity: BaseEntity, values: Map<String, Any?>): BaseEntity {
+
+
+        val beanWrapper = BeanWrapperImpl(entity)
+
+        values.forEach {
+            beanWrapper.setPropertyValue(it.key, it.value)
+        }
+
+        return entity
+    }
     /*
 
         fun create(request: CreateReq, userRoles: Set<Role>): CreateRs? {

@@ -1,12 +1,10 @@
 package ru.classbase.formengine.core
 
 import ru.classbase.formengine.base.BaseEntity
-import sun.jvm.hotspot.oops.CellTypeState.value
 import java.math.BigDecimal
 import kotlin.reflect.KClass
-import kotlin.reflect.KProperty
 
-open abstract class AbstractForm(override val formId: String, override val entityClass: KClass<out BaseEntity>) : Form {
+abstract class AbstractForm(override val formId: String, override val entityClass: KClass<out BaseEntity>) : Form {
     override val fields = hashMapOf<String, Field<*>>()
     fun textField(init: TextField.() -> Unit): TextField {
         val field = TextField()
@@ -38,16 +36,16 @@ interface Form {
 
 }
 
-interface Field<T : Comparable<T>> {
-    var type: KClass<T>
+interface Field<T> {
+    var type: KClass<*>
     var id: String
     var label: String
     var required: Boolean
     var defaultValue: () -> T?
 }
 
-abstract class AbstractField<T : Comparable<T>> : Field<T> {
-    override lateinit var type: KClass<T>
+abstract class AbstractField<T> : Field<T> {
+    override lateinit var type: KClass<*>
     override lateinit var id: String
     override lateinit var label: String
     override var required = true
