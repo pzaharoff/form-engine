@@ -28,8 +28,21 @@ class FormEngine(
         //отфильтруем левые поля, которых вообще нет в форме
         val filteredValues = filterNotExists(request, form)
 
+        //получим поля с доступом на создание
+        val grantedValues = getCreateGrantedFields(form, role, filteredValues)
+
         return null
     }
+
+    private fun getCreateGrantedFields(form: Form, role: Role, filteredValues: Map<String, Any?>): Map<String, Any?> {
+        val grantedFields = permissionService.getGrantedFields(form.formId, role)
+            .filter { it.hasCreate }
+            .map { it.field }
+            .toSet()
+
+        return filteredValues.filterKeys { grantedFields.contains(it) }
+    }
+
 
     private fun filterNotExists(request: CreateReq, form: Form): Map<String, Any?> {
         val result = request.data.filterKeys { form.fields.containsKey(it) }
@@ -39,6 +52,7 @@ class FormEngine(
 
         return result
     }
+
 
     private fun createEmptyEntity(form: Form): BaseEntity {
         return form.entityClass.createInstance()

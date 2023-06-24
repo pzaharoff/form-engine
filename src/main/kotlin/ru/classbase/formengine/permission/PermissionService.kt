@@ -3,6 +3,7 @@ package ru.classbase.formengine.permission
 import org.springframework.stereotype.Component
 import ru.classbase.formengine.core.Form
 import ru.classbase.formengine.core.FormException
+import ru.classbase.formengine.model.FieldPermission
 import ru.classbase.formengine.model.FormAction
 import ru.classbase.formengine.model.Permission.ENABLED
 import ru.classbase.formengine.model.Role
@@ -13,7 +14,8 @@ import ru.classbase.formengine.model.User
 class PermissionService(
     private val userDao: UserDao,
     private val userRoleDao: UserRoleDao,
-    private val formPermissionDao: FormPermissionDao
+    private val formPermissionDao: FormPermissionDao,
+    private val fieldPermissionDao: FieldPermissionDao
 ) {
     private val ADMIN_ROLE = "ADMIN"
     private val READER_ROLE = "READER"
@@ -44,6 +46,12 @@ class PermissionService(
         if (permission == null || !permission.hasRead) {
             throw FormException("Форма [$formId], роль [${role.name}], нет прав на чтение")
         }
+    }
+
+    fun getGrantedFields(formId: String, role: Role): Set<FieldPermission> {
+        val permission = formPermissionDao.findByFormAndRole(formId, role) ?: throw FormException("Нет прав")
+
+        return fieldPermissionDao.findByFormPermission(permission)
     }
 
     /*

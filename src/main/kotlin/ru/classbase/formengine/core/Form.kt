@@ -33,22 +33,25 @@ open abstract class AbstractForm(override val formId: String, override val entit
 
 interface Form {
     val formId: String
-    val entityClass : KClass<out BaseEntity>
-    val fields : Map<String, Field<*>>
+    val entityClass: KClass<out BaseEntity>
+    val fields: Map<String, Field<*>>
 
 }
 
 interface Field<T : Comparable<T>> {
     var type: KClass<T>
     var id: String
+    var label: String
+    var required: Boolean
+    var defaultValue: () -> T?
 }
 
 abstract class AbstractField<T : Comparable<T>> : Field<T> {
     override lateinit var type: KClass<T>
     override lateinit var id: String
-    open lateinit var label: String
-    open var required = true
-    open var defaultValue: () -> T? = { null }
+    override lateinit var label: String
+    override var required = true
+    override var defaultValue: () -> T? = { null }
 
 }
 
@@ -64,5 +67,5 @@ class DecimalField : AbstractField<BigDecimal>() {
 }
 
 class BooleanField : AbstractField<Boolean>() {
-    override var defaultValue: () -> Boolean? =  { false }
+    override var defaultValue: () -> Boolean? = { false }
 }
