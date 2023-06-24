@@ -58,7 +58,18 @@ abstract class AbstractField<T : Comparable<T>> : Field<T> {
 class TextField : AbstractField<String>() {
     var minLength = 0
     var maxLength = 255
+    var pattern: String? = null
 
+}
+
+class LongField : AbstractField<Long>() {
+    var minValue: Long? = null
+    var maxValue: Long? = null
+}
+
+class IntField : AbstractField<Int>() {
+    var minValue: Int? = null
+    var maxValue: Int? = null
 }
 
 class DecimalField : AbstractField<BigDecimal>() {
